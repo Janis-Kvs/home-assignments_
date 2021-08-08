@@ -1,0 +1,21 @@
+<div class="w-100">
+    <div class="row">
+        <div class="col-sm-6 col-xxl d-flex">
+            {{ include("dashboard/cards/_card_illustration.html.twig") }}
+        </div>
+        <div class="col-sm-6 col-xxl d-flex dashboard-api-card"
+             data-route="{{ path("dashboard_api_new_sales") }}">
+            {{ include("dashboard/cards/_card.html.twig") }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6 col-xxl d-flex dashboard-api-card"
+             data-route="{{ path("dashboard_api_cancelled") }}">
+            {{ include("dashboard/cards/_card.html.twig") }}
+        </div>
+        <div class="col-sm-6 col-xxl d-flex dashboard-api-card"
+             data-route="{{ path("dashboard_api_upgraded") }}">
+            {{ include("dashboard/cards/_card.html.twig") }}
+        </div>
+    </div>
+</div>

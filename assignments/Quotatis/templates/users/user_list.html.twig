@@ -1,0 +1,79 @@
+{% extends "layout_signed_in.html.twig" %}
+
+{% block layout_content %}
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header mb-0">
+                    <h5 class="card-title float-start">{{ t("User management")|trans }}</h5>
+                    <div class="float-end">
+                        <a class="btn btn-primary" href="{{ path("users_new") }}">{{ t("+ User")|trans }}</a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <table id="users-table-multi" class="table table-striped table-hover" style="width:100%">
+                        <thead>
+                        <tr>
+                            <th>{{ t("ID")|trans }}</th>
+                            <th>{{ t("Name")|trans }}</th>
+                            <th>{{ t("Email")|trans }}</th>
+                            <th>{{ t("Login")|trans }}</th>
+                            <th>{{ t("Status")|trans }}</th>
+                            <th>{{ t("Group")|trans }}</th>
+                            <th>{{ t("Last login")|trans }}</th>
+                            <th>{{ t("Actions")|trans }}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for user in users %}
+                            <tr>
+                                <td>{{ user.id }}</td>
+                                <td>{{ user.name }}</td>
+                                <td>{{ user.email }}</td>
+                                <td>{{ user.login }}</td>
+                                <td>{{ user.status }}</td>
+                                <td>
+                                    {% if user.userGroup %}
+                                        {{ user.userGroup.name }}
+                                    {% endif %}
+                                </td>
+                                <td></td>
+                                <td class="text-center">
+                                    <a class="mx-1" href="{{ path("users_edit", {id: user.id}) }}"
+                                       title="{{ t("Edit")|trans }}">
+                                        <i class="align-middle" data-feather="edit-2"></i>
+                                    </a>
+
+                                    {% if user.actif %}
+                                        <a class="mx-1" href="{{ path("users_deactivate", {id: user.id}) }}"
+                                           title="{{ t("Deactivate")|trans }}">
+                                            <i class="align-middle" data-feather="user-x"></i>
+                                        </a>
+                                    {% else %}
+                                        <a class="mx-1" href="{{ path("users_activate", {id: user.id}) }}"
+                                           title="{{ t("Activate")|trans }}">
+                                            <i class="align-middle" data-feather="user-check"></i>
+                                        </a>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+
+    {{ encore_entry_link_tags('user_list') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {{ encore_entry_script_tags('user_list') }}
+{% endblock %}

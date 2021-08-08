@@ -1,0 +1,13 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+    <div class="main d-flex justify-content-center w-100">
+        <main class="content d-flex p-0">
+            <div class="container d-flex flex-column">
+                <div class="row h-100">
+                    {% block layout_content %}{% endblock %}
+                </div>
+            </div>
+        </main>
+    </div>
+{% endblock %}

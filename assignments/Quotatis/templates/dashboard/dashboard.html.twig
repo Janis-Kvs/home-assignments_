@@ -1,0 +1,28 @@
+{% extends "layout_signed_in.html.twig" %}
+
+{% block layout_content %}
+    <div class="row mb-2 mb-xl-3">
+        <div class="col-auto d-none d-sm-block">
+            <h3>{{ t("Dashboard")|trans }}</h3>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12 col-xl-6 d-flex">
+            {{ include("dashboard/cards/_cards_row.html.twig") }}
+        </div>
+        <div class="col-md-12 col-xl-6"></div>
+    </div>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+
+    {{ encore_entry_link_tags('dashboard') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {{ encore_entry_script_tags('dashboard') }}
+{% endblock %}

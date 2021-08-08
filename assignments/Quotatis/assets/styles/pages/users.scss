@@ -1,0 +1,13 @@
+@import "./../helpers/variables";
+
+#users-table-multi {
+    a {
+        color: $gray-600;
+        text-decoration: none;
+    }
+
+    select {
+        max-width: 130px;
+    }
+}
+

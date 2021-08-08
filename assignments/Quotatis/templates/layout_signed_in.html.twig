@@ -1,0 +1,30 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+    <div class="wrapper">
+        <nav id="sidebar" class="sidebar">
+            <div class="sidebar-content js-simplebar">
+                <a class="sidebar-brand" href="{{ path("homepage") }}">
+                    <img src="{{ asset("build/images/logo-vertical.svg") }}" alt="Quotatis logo" class="img-fluid"/>
+                </a>
+
+                {{ include("common/_sidebar_menu.html.twig") }}
+
+            </div>
+        </nav>
+
+        <div class="main">
+
+            {{ include("common/_topbar_menu.html.twig") }}
+
+            <main class="content">
+                <div class="container-fluid p-0">
+                    {% block layout_content %}{% endblock %}
+                </div>
+            </main>
+
+            {{ include("common/_footer.html.twig") }}
+
+        </div>
+    </div>
+{% endblock %}

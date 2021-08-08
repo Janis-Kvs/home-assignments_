@@ -1,0 +1,17 @@
+{% extends "layout_signed_in.html.twig" %}
+
+{% block layout_content %}
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">{{ t("Report name")|trans }}</h5>
+                    <h6 class="card-subtitle text-muted">{{ t("Report description")|trans }}</h6>
+                </div>
+                <div class="card-body">
+                    {{ report|raw }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

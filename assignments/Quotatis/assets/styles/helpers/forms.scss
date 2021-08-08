@@ -1,0 +1,14 @@
+.form-group {
+  margin-bottom: 1rem;
+}
+
+label.required:after {
+  content: " *";
+  color: red;
+}
+
+select.form-control {
+  appearance: auto;
+  height: 2rem;
+  padding: 0.25rem 0.4rem;
+}

@@ -1,0 +1,55 @@
+<ul class="sidebar-nav">
+
+    <li class="sidebar-header">
+        {{ t("Reporting")|trans }}
+    </li>
+    <li class="sidebar-item">
+        <a class="sidebar-link" href="{{ path("reports_cost_of_sale") }}">
+            <i class="align-middle" data-feather="dollar-sign"></i>
+            <span>{{ t("Cost of Sale")|trans }}</span></a>
+    </li>
+
+    {% if is_granted("ROLE_ADMIN_SALES") or is_granted("ROLE_ADMIN_FULL_ACCESS") %}
+        <li class="sidebar-header">
+            {{ t("Sales")|trans }}
+        </li>
+        <li class="sidebar-item">
+            <a data-bs-target="#sales-reports" data-bs-toggle="collapse" class="sidebar-link collapsed">
+                <i class="align-middle" data-feather="bar-chart"></i> <span
+                        class="align-middle">{{ t("Reports")|trans }}</span>
+            </a>
+            <ul id="sales-reports" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
+                <li class="sidebar-item"><a class="sidebar-link" href="{{ path("sales_index") }}">Report 1</a></li>
+                <li class="sidebar-item"><a class="sidebar-link" href="#">Report 2</a></li>
+            </ul>
+        </li>
+    {% endif %}
+
+    {% if is_granted("ROLE_ADMIN_CS") or is_granted("ROLE_ADMIN_FULL_ACCESS") %}
+        <li class="sidebar-header">
+            {{ t("Customer Service")|trans }}
+        </li>
+        <li class="sidebar-item">
+            <a data-bs-target="#cs-reports" data-bs-toggle="collapse" class="sidebar-link collapsed">
+                <i class="align-middle" data-feather="bar-chart"></i> <span
+                        class="align-middle">{{ t("Reports")|trans }}</span>
+            </a>
+            <ul id="cs-reports" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
+                <li class="sidebar-item"><a class="sidebar-link" href="{{ path("cs_index") }}">Report 1</a></li>
+                <li class="sidebar-item"><a class="sidebar-link" href="#">Report 2</a></li>
+            </ul>
+        </li>
+    {% endif %}
+
+    {% if is_granted("ROLE_ADMIN_FULL_ACCESS") %}
+        <li class="sidebar-header">
+            {{ t("Administration")|trans }}
+        </li>
+        <li class="sidebar-item {% if app.request.get("_route") == "users_list" %}active{% endif %}">
+            <a class="sidebar-link" href="{{ path("users_list") }}">
+                <i class="align-middle" data-feather="users"></i> <span
+                        class="align-middle">{{ t("Users")|trans }}</span>
+            </a>
+        </li>
+    {% endif %}
+</ul>

@@ -1,0 +1,50 @@
+{% extends "layout_signed_in.html.twig" %}
+
+{% form_theme user_form _self %}
+{% form_theme roles_form _self %}
+
+{% use "bootstrap_4_horizontal_layout.html.twig" %}
+
+{% block form_group_class -%}
+    col-sm-8
+{%- endblock form_group_class %}
+
+{% block form_label_class -%}
+    col-sm-4
+{%- endblock form_label_class %}
+
+{% block layout_content %}
+    <div class="row">
+        <div class="col-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title"></h5>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a
+                                        href="{{ path("users_list") }}">{{ t("User management")|trans }}</a></li>
+                            <li class="breadcrumb-item active">{{ user.name }}</li>
+                        </ol>
+                    </nav>
+                </div>
+                <div class="card-body">
+                    {{ form(user_form) }}
+                </div>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="card">
+                <div class="card-body">
+                    {{ form(roles_form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+
+    {{ encore_entry_link_tags('users') }}
+{% endblock %}
+

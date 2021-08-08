@@ -1,0 +1,28 @@
+<div class="card flex-fill">
+    <div class="card-body">
+        <div class="row dashboard-loader">
+            <div class="spinner-border text-primary me-2" role="status">
+                <span class="sr-only">{{ t("Loading...")|trans }}</span>
+            </div>
+        </div>
+        <div class="row card-content d-none">
+            <div class="row">
+
+                <div class="col mt-0">
+                    <h5 class="card-title api-title"></h5>
+                </div>
+
+                <div class="col-auto">
+                    <div class="stat stat-sm">
+                        <i class="align-middle api-icon" data-feather=""></i>
+                    </div>
+                </div>
+            </div>
+            <span class="h1 d-inline-block mt-1 mb-4 api-value"></span>
+            <div class="mb-0">
+                <span class="badge mr-2 api-difference"></span>
+                <span class="text-muted api-difference-text"></span>
+            </div>
+        </div>
+    </div>
+</div>
