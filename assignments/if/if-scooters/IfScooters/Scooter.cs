@@ -66,18 +66,15 @@ namespace IfScooters
             {
                 _price = initialPrice;
             }
-
-            if (pickDay == returnDay && initialPrice > 20)
+            else if (pickDay == returnDay && initialPrice > 20)
             {
                 _price = 20;
             }
-
-            if (pickDay != returnDay && initialPrice <= 20)
+            else if (pickDay != returnDay && initialPrice <= 20)
             {
                 _price = initialPrice;
             }
-
-            if (pickDay != returnDay && initialPrice > 20)
+            else if (pickDay != returnDay && initialPrice > 20)
             {
                 decimal firstDayMinutes = 1440 - _pickTime.Hour * 60 + _pickTime.Minute;
                 decimal initialFirstDayPrice = firstDayMinutes * PricePerMinute;
