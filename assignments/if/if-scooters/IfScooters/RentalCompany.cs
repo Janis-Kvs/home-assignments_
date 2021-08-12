@@ -1,83 +1,65 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace IfScooters
 {
-    public class RentalCompany : IRentalCompany, IScooterService
+    public class RentalCompany : IRentalCompany
     {
-        private List<Scooter> _scooters;
         private Dictionary<int, decimal> _income;
+        private Dictionary<string, DateTime> _pickTime;
+
         public RentalCompany(string name)
         {
             Name = name;
             _income = new Dictionary<int, decimal>();
-            _scooters = new List<Scooter>();
+            _pickTime = new Dictionary<string, DateTime>();
         }
-        
         public string Name { get; }
 
-        public void AddScooter(string id, decimal pricePerMinute)
+        public void StartRent(string id, DateTime pickTime, ScooterService scooterService)
         {
-            _scooters.Add(new Scooter(id, pricePerMinute));
+            var scooter = scooterService.GetScooterById(id);
+           
+            if (!scooter.IsRented)
+            {
+                scooter.IsRented = true;
+                AddPickTime(pickTime, scooter);
+            }
+            else
+            {
+                throw new InvalidOperationException("Scooter is not available!");
+            }
         }
 
-        public void RemoveScooter(string id)
+        public decimal EndRent(string id, DateTime returnTime, ScooterService scooterService)
         {
-            var scooter = GetScooterById(id);
+            var scooter = scooterService.GetScooterById(id);
+
             if (scooter.IsRented)
             {
-                throw new ArgumentException("Cannot remove rented scooter!");
+                scooter.IsRented = false;
             }
             else
             {
-                _scooters.Remove(scooter);
-            }
-        }
-
-        public void StartRent(string id, DateTime pickTime)
-        {
-            var scooter = GetScooterById(id);
-            scooter?.BeingCheckedOut(pickTime);
-        }
-
-        public decimal EndRent(string id, DateTime returnTime)
-        {
-            var scooter = GetScooterById(id);
-            decimal price = scooter.BeingReturned(returnTime);
-            if (_income.ContainsKey(returnTime.Year))
-            {
-                _income[returnTime.Year] += price;
-            }
-            else
-            {
-                _income.Add(returnTime.Year, price);
+                throw new InvalidOperationException("Scooter is not rented out!");
             }
 
+            decimal price = CalculatePrice(scooter, returnTime);
+            AddIncome(price, returnTime);
+        
             return price;
         }
 
-        public IList<Scooter> GetScooters()
-        {
-            IList<Scooter> availableScooters = new List<Scooter>();
-            foreach (var scooter in _scooters)
-            {
-                if (!scooter.IsRented)
-                {
-                    availableScooters.Add(scooter);
-                }
-            }
-            return availableScooters;
-        }
-
-       public decimal CalculateIncome(int? year, bool includeNotCompletedRentals, DateTime returnTime)
+        public decimal CalculateIncome(int? year, bool includeNotCompletedRentals, DateTime incomeTime, ScooterService scooterService)
         {
             decimal totalIncome = 0;
 
             if (year != null)
-            { 
+            {
                 _income.TryGetValue(Convert.ToInt32(year), out totalIncome);
             }
             else
@@ -91,31 +73,87 @@ namespace IfScooters
 
             if (includeNotCompletedRentals)
             {
-                totalIncome += GetPriceFromRentedScooters(returnTime);
+                IList<Scooter> scooters = scooterService.GetScooters();
+                totalIncome += GetPriceFromRentedScooters(incomeTime, scooters);
             }
 
             return totalIncome;
         }
 
-        public Scooter GetScooterById(string scooterId)
-        {
-            foreach (var scooter in _scooters)
-            {
-                if (scooter.Id != scooterId) continue;
-                return scooter;
-            }
-            return null;
-        }
-
-        public decimal GetPriceFromRentedScooters(DateTime returnTime)
+        public decimal GetPriceFromRentedScooters(DateTime incomeTime, IList<Scooter> scooters)
         {
             decimal incomeFromRented = 0;
-            foreach (var scooter in _scooters)
+            foreach (var scooter in scooters)
             {
-                if (!scooter.IsRented) continue;
-                incomeFromRented += scooter.CalculatePrice(returnTime);
+                if (scooter.IsRented)
+                {
+                    incomeFromRented += CalculatePrice(scooter, incomeTime);
+                }
             }
             return incomeFromRented;
+        }
+
+        public decimal CalculatePrice(Scooter scooter, DateTime returnTime)
+        {
+            decimal price = 0;
+            TimeSpan rentTime = returnTime - _pickTime[scooter.Id];
+            decimal pickDay = _pickTime[scooter.Id].Day;
+            decimal returnDay = returnTime.Day;
+            decimal rentDays = returnDay - pickDay;
+            decimal initialPrice = (decimal)rentTime.TotalMinutes * scooter.PricePerMinute;
+
+            if (pickDay == returnDay && initialPrice <= 20)
+            {
+                price = initialPrice;
+            }
+            else if (pickDay == returnDay && initialPrice > 20)
+            {
+                price = 20;
+            }
+            else if (pickDay != returnDay && initialPrice <= 20)
+            {
+                price = initialPrice;
+            }
+            else if (pickDay != returnDay && initialPrice > 20)
+            {
+                decimal firstDayMinutes = 1440 - _pickTime[scooter.Id].Hour * 60 - _pickTime[scooter.Id].Minute;
+                decimal initialFirstDayPrice = firstDayMinutes * scooter.PricePerMinute;
+                decimal firstDayPrice = (initialFirstDayPrice <= 20) ? initialFirstDayPrice : 20;
+
+                decimal middleDayPrice = (rentDays - 1) * 20;
+
+                decimal lastDayMinutes = returnTime.Hour * 60 + returnTime.Minute;
+                decimal initialLastDayPrice = lastDayMinutes * scooter.PricePerMinute;
+                decimal LastDayPrice = (initialLastDayPrice <= 20) ? initialLastDayPrice : 20;
+
+                price = firstDayPrice + middleDayPrice + LastDayPrice;
+            }
+
+            return price;
+        }
+
+        void AddPickTime(DateTime pickTime, Scooter scooter)
+        {
+            if (_pickTime.ContainsKey(scooter.Id))
+            {
+                _pickTime[scooter.Id] = pickTime;
+            }
+            else
+            {
+                _pickTime.Add(scooter.Id, pickTime);
+            }
+        }
+
+        void AddIncome(decimal price, DateTime returnTime)
+        {
+            if (_income.ContainsKey(returnTime.Year))
+            {
+                _income[returnTime.Year] += price;
+            }
+            else
+            {
+                _income.Add(returnTime.Year, price);
+            }
         }
     }
 }

@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace IfScooters
 {
-    interface IRentalCompany
+    public interface IRentalCompany
     {
         string Name { get; }
 
-        void StartRent(string id, DateTime pickTime);
+        void StartRent(string id, DateTime pickTime, ScooterService scooterService);
 
-        decimal EndRent(string id, DateTime returnTime);
+        decimal EndRent(string id, DateTime returnTime, ScooterService scooterService);
 
-        decimal CalculateIncome(int? year, bool includeNotCompletedRentals, DateTime returnTime);
+        decimal CalculateIncome(int? year, bool includeNotCompletedRentals, DateTime incomeTime, ScooterService scooterService);
     }
 }

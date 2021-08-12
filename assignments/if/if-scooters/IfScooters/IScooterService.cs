@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace IfScooters
 {
-    interface IScooterService
+    public interface IScooterService
     {
         void AddScooter(string id, decimal pricePerMinute);
        
