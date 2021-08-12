@@ -75,5 +75,16 @@ namespace IfScooters.Tests
             //Assert
             Assert.AreEqual(expected, actual);
         }
+
+        [TestMethod]
+        public void GetScooterById_EmptyScooterListGiven_NullExpected()
+        {
+            //Arrange
+            Scooter? expected = null;
+            //Act
+            var actual = scooterService.GetScooterById("7856");
+            //Assert
+            Assert.AreEqual(expected, actual);
+        }
     }
 }

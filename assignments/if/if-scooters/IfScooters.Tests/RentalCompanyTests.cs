@@ -51,10 +51,12 @@ namespace IfScooters.Tests
             scooterService.AddScooter("7856", 0.16M);
             scooterService.AddScooter("8888", 0.19M);
             rentalCompany.StartRent("7755", new DateTime(2021, 8, 10, 11, 33, 00), scooterService);
+            rentalCompany.EndRent("7755", new DateTime(2021, 8, 10, 13, 33, 00), scooterService);
+            rentalCompany.StartRent("7755", new DateTime(2021, 8, 10, 14, 33, 00), scooterService);
             var expected1 = 14.4M;
             var expected2 = false;
             //Act
-            var actual1 = rentalCompany.EndRent("7755", new DateTime(2021, 8, 10, 13, 33, 00), scooterService);
+            var actual1 = rentalCompany.EndRent("7755", new DateTime(2021, 8, 10, 16, 33, 00), scooterService);
             var actual2 = scooterService.GetScooterById("7755").IsRented;
             //Assert
             Assert.AreEqual(expected1, actual1);
