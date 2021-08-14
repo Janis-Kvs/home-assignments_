@@ -6,11 +6,11 @@ namespace IfScooters.Tests
     [TestClass]
     public class ScooterTests
     {
+        Scooter scooter = new Scooter("7755", 0.12M);
         [TestMethod]
         public void Id_ValidScooter_7755Expected()
         {
             //Arrange
-            Scooter scooter = new Scooter("7755", 0.12M);
             var expected = "7755";
             //Act
             var actual = scooter.Id;
@@ -22,7 +22,6 @@ namespace IfScooters.Tests
         public void PricePerMinute_ValidScooter_0Point12Expected()
         {
             //Arrange
-            Scooter scooter = new Scooter("7755", 0.12M);
             var expected = 0.12M;
             //Act
             var actual = scooter.PricePerMinute;
@@ -33,8 +32,6 @@ namespace IfScooters.Tests
         [TestMethod]
         public void IsRented_ValidScooter_0Point12Expected()
         {
-            //Arrange
-            Scooter scooter = new Scooter("7755", 0.12M);
             //Act
             var actual = scooter.IsRented;
             //Assert

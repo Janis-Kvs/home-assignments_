@@ -35,7 +35,7 @@ namespace IfScooters
         
         public IList<Scooter> GetScooters()
         {
-            return _scooters;
+            return _scooters.ToList();
         }
         
         public Scooter GetScooterById(string scooterId)
