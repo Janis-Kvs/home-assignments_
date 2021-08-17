@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IfScooters.Exceptions;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -34,7 +35,7 @@ namespace IfScooters
             }
             else
             {
-                throw new InvalidOperationException("Scooter is not available!");
+                throw new ScooterRentedException("Scooter is not available!");
             }
         }
 
@@ -51,7 +52,7 @@ namespace IfScooters
             }
             else
             {
-                throw new InvalidOperationException("Scooter is not rented out!");
+                throw new ScooterNotRentedException("Scooter is not rented out!");
             }
 
             decimal price = _accounting.CalculatePrice(rentedScooter);

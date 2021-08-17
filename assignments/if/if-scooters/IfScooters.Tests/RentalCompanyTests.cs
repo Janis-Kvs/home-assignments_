@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using IfScooters.Exceptions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace IfScooters.Tests
@@ -61,7 +62,7 @@ namespace IfScooters.Tests
         }
 
         [TestMethod]
-        public void StartRent_StartRentWhenAlreadyRented_ExceptionExpected()
+        public void StartRent_StartRentWhenAlreadyRented_ScooterRentedExceptionExpected()
         {
             //Arrange
             ScooterService scooterService = new ScooterService();
@@ -71,7 +72,7 @@ namespace IfScooters.Tests
             scooterService.AddScooter("7756", 0.12M);
             rentalCompany.StartRent("7756");
             //Assert
-            Assert.ThrowsException<InvalidOperationException>(() => rentalCompany.StartRent("7756"));
+            Assert.ThrowsException<ScooterRentedException>(() => rentalCompany.StartRent("7756"));
         }
 
         [TestMethod]
@@ -118,7 +119,7 @@ namespace IfScooters.Tests
         }
 
         [TestMethod]
-        public void EndRent_EndRentWhenRentIsNotStarted_ExceptionExpected()
+        public void EndRent_EndRentWhenRentIsNotStarted_ScooterNotRentedExceptionExpected()
         {
             //Arrange
             ScooterService scooterService = new ScooterService();
@@ -127,7 +128,7 @@ namespace IfScooters.Tests
             IRentalCompany rentalCompany = new RentalCompany("XScooters", scooterService, rentedScooters, rentalAccounting);
             scooterService.AddScooter("7758", 0.12M);
             //Assert
-            Assert.ThrowsException<InvalidOperationException>(() => rentalCompany.EndRent("7758"));
+            Assert.ThrowsException<ScooterNotRentedException>(() => rentalCompany.EndRent("7758"));
         }
 
         [DataTestMethod]

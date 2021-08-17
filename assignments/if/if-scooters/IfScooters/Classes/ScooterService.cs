@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IfScooters.Exceptions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,7 +18,14 @@ namespace IfScooters
 
         public void AddScooter(string id, decimal pricePerMinute)
         {
-            _scooters.Add(new Scooter(id, pricePerMinute));
+            if (pricePerMinute >= 0)
+            {
+                _scooters.Add(new Scooter(id, pricePerMinute));
+            }
+            else
+            {
+                throw new NegativePricePerMinuteException("Price per minute should be zero or a positive number!");
+            }
         }
         
         public void RemoveScooter(string id)
@@ -25,7 +33,7 @@ namespace IfScooters
             var scooter = GetScooterById(id);
             if (scooter.IsRented)
             {
-                throw new ArgumentException("Cannot remove rented scooter!");
+                throw new ScooterRentedException("Cannot remove rented scooter!");
             }
             else
             {

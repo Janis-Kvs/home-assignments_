@@ -9,14 +9,22 @@ namespace IfScooters.Tests
     public class RentalAccountingTests
     {
         [DataTestMethod]
-        [DataRow(10, 11, 10, 12, 7.2)]
-        [DataRow(10, 11, 10, 17, 20)]
-        [DataRow(10, 23, 11, 1, 14.4)]
-        [DataRow(10, 11, 11, 12, 40)]
-        [DataRow(10, 11, 16, 12, 140)]
-        [DataRow(10, 23, 14, 1, 74.4)]
-        [DataRow(10, 22, 14, 1, 81.6)]
-        public void CalculatePriceTests(int day1, int hour1, int day2, int hour2, double price)
+        [DataRow(10, 11, 10, 12, 7.2, 0.12)]
+        [DataRow(10, 11, 10, 17, 20, 0.12)]
+        [DataRow(10, 23, 11, 1, 14.4, 0.12)]
+        [DataRow(10, 11, 11, 12, 40, 0.12)]
+        [DataRow(10, 11, 16, 12, 140, 0.12)]
+        [DataRow(10, 23, 14, 1, 74.4, 0.12)]
+        [DataRow(10, 22, 14, 1, 81.6, 0.12)]
+        [DataRow(10, 11, 10, 12, 15, 0.25)]
+        [DataRow(10, 11, 10, 17, 20, 0.25)]
+        [DataRow(10, 23, 11, 1, 26.75, 0.25)]
+        [DataRow(10, 11, 11, 12, 40, 0.25)]
+        [DataRow(10, 11, 16, 12, 140, 0.25)]
+        [DataRow(10, 23, 14, 1, 86.75, 0.25)]
+        [DataRow(10, 22, 14, 0, 88.25, 0.25)]
+        [DataRow(6, 12, 7, 12, 40, 1)]
+        public void CalculatePriceTests(int day1, int hour1, int day2, int hour2, double price, double pricePerMinute)
         {
             //Arrange
             RentalAccounting rentalAccounting = new RentalAccounting();
@@ -26,7 +34,7 @@ namespace IfScooters.Tests
                 Id = "7711",
                 IsRented = false,
                 PickTime = new DateTime(2021, 8, day1, hour1, 33, 00),
-                PricePerMinute = 0.12M,
+                PricePerMinute = Convert.ToDecimal(pricePerMinute),
                 ReturnTime = new DateTime(2021, 8, day2, hour2, 33, 00)
             });
             

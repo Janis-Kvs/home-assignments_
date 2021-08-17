@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using IfScooters.Exceptions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace IfScooters.Tests
@@ -20,6 +21,13 @@ namespace IfScooters.Tests
             var expected = 1;
             //Assert
             Assert.IsTrue(scooterService.GetScooters().Count == 1);
+        }
+
+        [TestMethod]
+        public void AddScooter_NegativePricePerMinuteExceptionExpected()
+        {
+            //Assert
+            Assert.ThrowsException<NegativePricePerMinuteException>(() => scooterService.AddScooter("7755", -0.12M));
         }
 
         [TestMethod]
@@ -46,7 +54,7 @@ namespace IfScooters.Tests
             scooterService.AddScooter("8888", 0.19M);
             scooterService.GetScooterById("7755").IsRented = true;
             //Assert
-            Assert.ThrowsException<ArgumentException>(() => scooterService.RemoveScooter("7755"));
+            Assert.ThrowsException<ScooterRentedException>(() => scooterService.RemoveScooter("7755"));
         }
 
         [TestMethod]
