@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31424.327
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IfRisk", "IfRisk\IfRisk.csproj", "{67396FF8-47A2-442B-BBDE-9C6A22DB71D3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IfRisk.Tests", "IfRisk.Tests\IfRisk.Tests.csproj", "{72B9173F-A82A-42FD-A87F-AF133CD77FD4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{67396FF8-47A2-442B-BBDE-9C6A22DB71D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{67396FF8-47A2-442B-BBDE-9C6A22DB71D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{67396FF8-47A2-442B-BBDE-9C6A22DB71D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{67396FF8-47A2-442B-BBDE-9C6A22DB71D3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{72B9173F-A82A-42FD-A87F-AF133CD77FD4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{72B9173F-A82A-42FD-A87F-AF133CD77FD4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{72B9173F-A82A-42FD-A87F-AF133CD77FD4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{72B9173F-A82A-42FD-A87F-AF133CD77FD4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E76BF2EA-92D3-4492-AC16-C82776C947DB}
+	EndGlobalSection
+EndGlobal
