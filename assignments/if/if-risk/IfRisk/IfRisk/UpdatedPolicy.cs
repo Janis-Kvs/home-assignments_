@@ -10,6 +10,15 @@ namespace IfRisk
 {
     public class UpdatedPolicy : IPolicy
     {
+        public string NameOfInsuredObject { get; }
+        public DateTime ValidFrom { get; }
+        public DateTime ValidTill { get; }
+        public decimal Premium { get; }
+        public IList<Risk> InsuredRisks { get; }
+        public decimal AdditionalPremium { get; }
+        public Risk AdditionalRisk { get; }
+        public DateTime AdditionalValidFrom { get; }
+
         public UpdatedPolicy(IPolicy previousPolicy, short validMonths, Risk addedRisk, DateTime additionalValidFrom)
         {
             NameOfInsuredObject = previousPolicy.NameOfInsuredObject;
@@ -23,21 +32,5 @@ namespace IfRisk
             AdditionalRisk = addedRisk;
             AdditionalValidFrom = additionalValidFrom;
         }
-        
-        public string NameOfInsuredObject { get; }
-    
-        public DateTime ValidFrom { get; }
-      
-        public DateTime ValidTill { get; }
-        
-        public decimal Premium { get; }
-      
-        public IList<Risk> InsuredRisks { get; }
-
-        public decimal AdditionalPremium { get;  }
-
-        public Risk AdditionalRisk { get; }
-
-        public DateTime AdditionalValidFrom { get; }
     }
 }

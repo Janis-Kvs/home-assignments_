@@ -31,24 +31,16 @@ namespace IfRisk.Tests
             string expectedAdditionalRiskName = "Fire in the apartment";
 
             //Act
-            string actualNameOfInsuredObject = "Juris Berzins";
-            DateTime actualValidFrom = updatedPolicy.ValidFrom;
-            DateTime actualValidTill = updatedPolicy.ValidTill;
-            decimal actualPremium = updatedPolicy.Premium;
-            int actualInsuredRisksCount = updatedPolicy.InsuredRisks.Count;
-            decimal actualAdditionalPremium = updatedPolicy.AdditionalPremium;
-            DateTime actualAdditionalValidFrom = updatedPolicy.AdditionalValidFrom;
-            string actualAdditionalRiskName = updatedPolicy.AdditionalRisk.Name;
 
             //Assert
-            Assert.AreEqual(expectedNameOfInsuredObject, actualNameOfInsuredObject);
-            Assert.AreEqual(expectedValidFrom, actualValidFrom);
-            Assert.AreEqual(expectedValidTill, actualValidTill);
-            Assert.AreEqual(expectedPremium, actualPremium);
-            Assert.AreEqual(expectedInsuredRisksCount, actualInsuredRisksCount);
-            Assert.AreEqual(expectedAdditionalPremium, actualAdditionalPremium);
-            Assert.AreEqual(expectedAdditionalValidFrom, actualAdditionalValidFrom);
-            Assert.AreEqual(expectedAdditionalRiskName, actualAdditionalRiskName);
+            Assert.AreEqual(expectedNameOfInsuredObject, updatedPolicy.NameOfInsuredObject);
+            Assert.AreEqual(expectedValidFrom, updatedPolicy.ValidFrom);
+            Assert.AreEqual(expectedValidTill, updatedPolicy.ValidTill);
+            Assert.AreEqual(expectedPremium, updatedPolicy.Premium);
+            Assert.AreEqual(expectedInsuredRisksCount, updatedPolicy.InsuredRisks.Count);
+            Assert.AreEqual(expectedAdditionalPremium, updatedPolicy.AdditionalPremium);
+            Assert.AreEqual(expectedAdditionalValidFrom, updatedPolicy.AdditionalValidFrom);
+            Assert.AreEqual(expectedAdditionalRiskName, updatedPolicy.AdditionalRisk.Name);
         }
     }
 }

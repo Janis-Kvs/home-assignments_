@@ -13,11 +13,10 @@ namespace IfRisk.Tests
             string riskName = "Water leak in the apartment";
             decimal yearlyPrice = 12M;
             //Act
-            string actualRiskName = risk.Name;
-            decimal actualYearlyPrice = risk.YearlyPrice;
+           
             //Assert
-            Assert.AreEqual(riskName, actualRiskName);
-            Assert.AreEqual(yearlyPrice, actualYearlyPrice);
+            Assert.AreEqual(riskName, risk.Name);
+            Assert.AreEqual(yearlyPrice, risk.YearlyPrice);
         }
     }
 }

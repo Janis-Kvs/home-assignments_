@@ -28,17 +28,13 @@ namespace IfRisk.Tests
             decimal premium = 20M;
             int insuredRisksCount = 2;
             //Act
-            string actualNameOfInsuredObject = policy.NameOfInsuredObject;
-            DateTime actualValidFrom = policy.ValidFrom;
-            DateTime actualValidTill = policy.ValidTill;
-            decimal actualPremium = policy.Premium;
-            int actualInsuredRisksCount = policy.InsuredRisks.Count;
+          
             //Assert
-            Assert.AreEqual(nameOfInsuredObject, actualNameOfInsuredObject);
-            Assert.AreEqual(validFrom, actualValidFrom);
-            Assert.AreEqual(validTill, actualValidTill);
-            Assert.AreEqual(premium, actualPremium);
-            Assert.AreEqual(insuredRisksCount, actualInsuredRisksCount);
+            Assert.AreEqual(nameOfInsuredObject, policy.NameOfInsuredObject);
+            Assert.AreEqual(validFrom, policy.ValidFrom);
+            Assert.AreEqual(validTill, policy.ValidTill);
+            Assert.AreEqual(premium, policy.Premium);
+            Assert.AreEqual(insuredRisksCount, policy.InsuredRisks.Count);
         }
     }
 }

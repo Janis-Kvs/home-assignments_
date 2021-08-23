@@ -11,7 +11,10 @@ namespace IfRisk
 {
     public class InsuranceCompany : IInsuranceCompany
     {
+        public string Name { get; }
+        public IList<Risk> AvailableRisks { get; set; }
         private List<IPolicy> _policies;
+
         public InsuranceCompany(string name, IList<Risk> risks)
         {
             Name = name;
@@ -19,10 +22,6 @@ namespace IfRisk
             _policies = new List<IPolicy>();
         }
         
-        public string Name { get; }
-     
-        public IList<Risk> AvailableRisks { get; set; }
-      
         public IPolicy SellPolicy(string nameOfInsuredObject, DateTime validFrom, short validMonths, IList<Risk> selectedRisks)
         {
             DateTime validTill = validFrom.AddMonths(validMonths);
@@ -42,7 +41,9 @@ namespace IfRisk
             if (name is null)
             {
                 throw new PolicyDoesNotExistException("There is no policies with the name of insured object!");
-            } else if (policies.Count == 0)
+            }
+            
+            if (policies.Count == 0)
             {
                 throw new PolicyDoesNotExistException("There is no policies within the requested period of time!");
             }
@@ -71,7 +72,8 @@ namespace IfRisk
             {
                 throw new PolicyDoesNotExistException("There is no policies with the name of insured object!");
             }
-            else if (policies.Count == 0)
+            
+            if (policies.Count == 0)
             {
                 throw new PolicyDoesNotExistException("There is no policies within the requested period of time!");
             }

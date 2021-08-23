@@ -23,9 +23,10 @@ namespace IfRisk
         {
             if (validFrom > validTill)
             {
-                throw new InvalidTimePeriodException("The policy start date cannot be after policy end date!")
+                throw new InvalidTimePeriodException("The policy start date cannot be after policy end date!");
             }
-                long validFromTicks = validFrom.Ticks;
+
+            long validFromTicks = validFrom.Ticks;
             long validTillTicks = validTill.Ticks;
             TimeSpan span = TimeSpan.FromTicks(validTillTicks - validFromTicks);
             short validMonths = (short)Math.Round((span.TotalDays / 30), 2);

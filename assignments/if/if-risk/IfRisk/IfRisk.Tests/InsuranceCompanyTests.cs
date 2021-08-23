@@ -10,12 +10,13 @@ namespace IfRisk.Tests
     [TestClass]
     public class InsuranceCompanyTests
     {
+        Risk risk1 = new Risk("Water leak in the apartment", 12M);
+        Risk risk2 = new Risk("Electricity leakage in the apartment", 12M);
+
         [TestMethod]
         public void InsuranceCompany_ValidInsuranceCompany_ValidFieldsExpected()
         {
             //Arrange
-            Risk risk1 = new Risk("Water leak in the apartment", 12M);
-            Risk risk2 = new Risk("Electricity leakage in the apartment", 12M);
             List<Risk> risks = new List<Risk> { risk1, risk2 };
             IInsuranceCompany insuranceCompany = new InsuranceCompany("If", risks);
             string expectedName = "If";
@@ -34,39 +35,29 @@ namespace IfRisk.Tests
         public void SellPolicy_ValidSellPolicy_ValidPolicyFieldsExpected()
         {
             //Arrange
-            Risk risk1 = new Risk("Water leak in the apartment", 10M);
-            Risk risk2 = new Risk("Electricity leakage in the apartment", 12M);
             List<Risk> risks = new List<Risk> { risk1, risk2 };
             IInsuranceCompany insuranceCompany = new InsuranceCompany("If", risks);
             var expectedNameOfInsuredObject = "Juris Berzins";
             var expectedValidFrom = new DateTime(2020, 03, 23);
             var expectedValidTill = new DateTime(2020, 11, 23);
-            var expectedPremium = 14.67M;
+            var expectedPremium = 16M;
             var expectedInsuredRisksCount = 2;
 
             //Act
             var actualPolicy = insuranceCompany.SellPolicy("Juris Berzins", new DateTime(2020, 03, 23), 8, risks);
-            var actualNameOfInsuredObject = actualPolicy.NameOfInsuredObject;
-            var actualValidFrom = actualPolicy.ValidFrom;
-            var actualValidTill = actualPolicy.ValidTill;
-            var actualPremium = actualPolicy.Premium;
-            var actualInsuredRisksCount = actualPolicy.InsuredRisks.Count;
-
-
+          
             //Assert
-            Assert.AreEqual(expectedNameOfInsuredObject, actualNameOfInsuredObject);
-            Assert.AreEqual(expectedValidFrom, actualValidFrom);
-            Assert.AreEqual(expectedValidTill, actualValidTill);
-            Assert.AreEqual(expectedPremium, actualPremium);
-            Assert.AreEqual(expectedInsuredRisksCount, actualInsuredRisksCount);
+            Assert.AreEqual(expectedNameOfInsuredObject, actualPolicy.NameOfInsuredObject);
+            Assert.AreEqual(expectedValidFrom, actualPolicy.ValidFrom);
+            Assert.AreEqual(expectedValidTill, actualPolicy.ValidTill);
+            Assert.AreEqual(expectedPremium, actualPolicy.Premium);
+            Assert.AreEqual(expectedInsuredRisksCount, actualPolicy.InsuredRisks.Count);
         }
 
         [TestMethod]
         public void AddRisk_ValidPolicywith2RisksGiven_3RisksExpected()
         {
             //Arrange
-            Risk risk1 = new Risk("Water leak in the apartment", 10M);
-            Risk risk2 = new Risk("Electricity leakage in the apartment", 12M);
             List<Risk> risks = new List<Risk> { risk1, risk2 };
             Risk addedRisk = new Risk("Fire in the apartment", 15M);
             IInsuranceCompany insuranceCompany = new InsuranceCompany("If", risks);
@@ -85,8 +76,6 @@ namespace IfRisk.Tests
         public void AddRisk_SecondUpdateOfPolicyGiven_4RisksExpected()
         {
             //Arrange
-            Risk risk1 = new Risk("Water leak in the apartment", 10M);
-            Risk risk2 = new Risk("Electricity leakage in the apartment", 12M);
             List<Risk> risks = new List<Risk> { risk1, risk2 };
             Risk addedRisk = new Risk("Fire in the apartment", 15M);
             IInsuranceCompany insuranceCompany = new InsuranceCompany("If", risks);
@@ -106,8 +95,6 @@ namespace IfRisk.Tests
         public void GetPolicy_GivenPolicyOf2InitialRisksAndTwoUpdatedRisksandEffectiveDate_4RiskPolicyExpected()
         {
             //Arrange
-            Risk risk1 = new Risk("Water leak in the apartment", 10M);
-            Risk risk2 = new Risk("Electricity leakage in the apartment", 12M);
             List<Risk> risks = new List<Risk> { risk1, risk2 };
             Risk addedRisk = new Risk("Fire in the apartment", 15M);
             IInsuranceCompany insuranceCompany = new InsuranceCompany("If", risks);
