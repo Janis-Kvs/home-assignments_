@@ -7,6 +7,7 @@
     <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="3.0.13" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\AzureStorage\StorageApp.csproj" />
     <ProjectReference Include="..\ConsoleApp1\AzStorage.csproj" />
   </ItemGroup>
   <ItemGroup>

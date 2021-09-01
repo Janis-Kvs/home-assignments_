@@ -8,7 +8,8 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using AzStorage;
+using StorageApp;
+using System.Globalization;
 
 namespace FunctionApp
 {
@@ -33,12 +34,11 @@ namespace FunctionApp
             {
                 return new OkObjectResult("Please provide query strings for a date in format yyyymmddhhmmss");
             }
-
             try
             {
-                DateTime dateTimeFrom = ConvertDate(dateFrom);
-                DateTime dateTimeTo = ConvertDate(dateTo);
-                List<AzStorage.LogInEntity> logInList = await StorageService.GetTableEntities(dateTimeFrom, dateTimeTo, "table");
+                DateTime dateTimeFrom = DateTime.ParseExact(dateFrom, "yyyyMMddHHmmss", CultureInfo.CurrentCulture, DateTimeStyles.AllowWhiteSpaces);
+                DateTime dateTimeTo = DateTime.ParseExact(dateTo, "yyyyMMddHHmmss", CultureInfo.CurrentCulture, DateTimeStyles.AllowWhiteSpaces);
+                List<StorageApp.LogInEntity> logInList = await StorageService.GetTableEntities(dateTimeFrom, dateTimeTo, "table");
                 return new OkObjectResult(logInList);
             }
             catch (Exception e)
@@ -46,20 +46,6 @@ namespace FunctionApp
                 Console.WriteLine(e.Message);
                 throw;
             }
-        }
-        public static DateTime ConvertDate(string date)
-        {
-            // process date
-            int year = int.Parse(date.Substring(0, 4));
-            int month = int.Parse(date.Substring(4, 2));
-            int day = int.Parse(date.Substring(6, 2));
-            int hour = int.Parse(date.Substring(8, 2));
-            int minute = int.Parse(date.Substring(10, 2));
-            int second = int.Parse(date.Substring(12, 2));
-
-            DateTime resultDate = new DateTime(year, month, day, hour, minute, second);
-
-            return resultDate;
         }
     }
 }
