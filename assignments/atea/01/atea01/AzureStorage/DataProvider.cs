@@ -3,12 +3,12 @@ using System.Threading.Tasks;
 
 namespace StorageApp
 {
-    public class GetData
+    public class DataProvider
     {
         private string _uri = "https://api.publicapis.org/random?auth=null";
         private HttpClient _client;
 
-        public GetData()
+        public DataProvider()
         {
             _client = new HttpClient();
         }

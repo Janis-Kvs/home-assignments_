@@ -11,7 +11,7 @@ using StorageApp;
 
 namespace FunctionApp
 {
-    public static class GetBlobAPI
+    public class GetBlobAPI
     {
         [FunctionName("GetBlob")]
         public static async Task<IActionResult> Run(

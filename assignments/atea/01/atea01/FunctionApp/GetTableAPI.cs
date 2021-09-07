@@ -13,7 +13,7 @@ using System.Globalization;
 
 namespace FunctionApp
 {
-    public static class GetTableAPI
+    public class GetTableAPI
     {
         [FunctionName("GetTable")]
         public static async Task<IActionResult> Run(

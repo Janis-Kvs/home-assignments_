@@ -7,14 +7,14 @@ using Microsoft.Extensions.Logging;
 
 namespace FunctionApp
 {
-    public static class DataService
+    public class DataService
     {
         [FunctionName("DataService")]
         public static async Task Run([TimerTrigger("* * * * *")]TimerInfo myTimer, ILogger log)
         {
             log.LogInformation($"C# Timer trigger function executed at: {DateTime.Now}");
 
-            var getData = new StorageApp.GetData();
+            var getData = new DataProvider();
 
             try
             {
