@@ -10,13 +10,20 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using StorageApp;
 using System.Globalization;
+using System.Configuration;
 
 namespace FunctionApp
 {
     public class GetTableAPI
     {
+        private readonly StorageService _storageService;
+        public GetTableAPI(StorageService storageService)
+        {
+            _storageService = storageService;
+        }
+
         [FunctionName("GetTable")]
-        public static async Task<IActionResult> Run(
+        public async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = null)] HttpRequest req,
             ILogger log)
         {
@@ -38,7 +45,7 @@ namespace FunctionApp
             {
                 DateTime dateTimeFrom = DateTime.ParseExact(dateFrom, "yyyyMMddHHmmss", CultureInfo.CurrentCulture, DateTimeStyles.AllowWhiteSpaces);
                 DateTime dateTimeTo = DateTime.ParseExact(dateTo, "yyyyMMddHHmmss", CultureInfo.CurrentCulture, DateTimeStyles.AllowWhiteSpaces);
-                List<StorageApp.LogInEntity> logInList = await StorageService.GetTableEntities(dateTimeFrom, dateTimeTo, "table");
+                List<StorageApp.LogInEntity> logInList = await _storageService.GetTableEntities(dateTimeFrom, dateTimeTo, ConfigurationManager.AppSettings["azureTableName"]);
                 return new OkObjectResult(logInList);
             }
             catch (Exception e)

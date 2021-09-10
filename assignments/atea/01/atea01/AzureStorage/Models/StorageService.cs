@@ -2,6 +2,7 @@
 using Microsoft.WindowsAzure.Storage;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -10,54 +11,62 @@ using Azure.Storage.Blobs;
 using Microsoft.WindowsAzure.Storage.Blob;
 using Newtonsoft.Json;
 using System.IO;
+using Refit;
 
 namespace StorageApp
 {
     public class StorageService
     {
-        public static async Task InsertTableEntity(HttpResponseMessage responseMessage, string tableName)
-        {
-            CloudStorageAccount storageAccount = CloudStorageAccount.Parse("UseDevelopmentStorage=true");
+        private readonly string _connectionString;
+        private readonly CloudStorageAccount _storageAccount;
 
+        public StorageService(string connectionName)
+        {
+            _connectionString = ConfigurationManager.ConnectionStrings[connectionName].ConnectionString;
+            _storageAccount = CloudStorageAccount.Parse(_connectionString);
+        }
+
+        public async Task InsertTableEntity(ApiResponse<ApiItem> response)
+        {
             //Create Azure Table
-            CloudTableClient tableClient = storageAccount.CreateCloudTableClient();
+            CloudTableClient tableClient = _storageAccount.CreateCloudTableClient();
+            var tableName = ConfigurationManager.AppSettings["azureTableName"];
             CloudTable logInTable = tableClient.GetTableReference(tableName);
             await logInTable.CreateIfNotExistsAsync();
 
             //Insert entities
-            string statusCode = responseMessage.StatusCode.ToString();
-            int statusCodeInt = (int)responseMessage.StatusCode;
+            string statusCode = response.StatusCode.ToString();
+            int statusCodeInt = (int)response.StatusCode;
             await logInTable.ExecuteAsync(TableOperation.InsertOrReplace(new LogInEntity(statusCode, statusCodeInt)));
         }
-        public static async Task InsertBlob(HttpResponseMessage responseMessage, string containerName)
+        public async Task InsertBlob(ApiResponse<ApiItem> response)
         {
-            // get stream from uri
-            var stream = await responseMessage.Content.ReadAsStreamAsync();
-
+            // retrieving the content in the response body as a strongly-typed object
+            ApiItem contentObject = response.Content;
+            
             // Create a BlobServiceClient object which will be used to create a container client
-            BlobServiceClient blobServiceClient = new BlobServiceClient("UseDevelopmentStorage=true");
+            BlobServiceClient blobServiceClient = new BlobServiceClient(_connectionString);
 
             // Create the container and return a container client object
-            BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient(containerName);
+            var blobContainerName = ConfigurationManager.AppSettings["azureBlobContainerName"];
+            BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient(blobContainerName);
             await containerClient.CreateIfNotExistsAsync();
 
             // Get a reference to a blob
-            BlobClient blobClient2 = containerClient.GetBlobClient(DateTime.Now.ToString());
+            BlobClient blobClient = containerClient.GetBlobClient(DateTime.Now.ToString());
 
-            // Upload data from the local file
-            await blobClient2.UploadAsync(stream, true);
+            // Upload data from the serialized object
+            var jsonString = JsonConvert.SerializeObject(contentObject);
+            await blobClient.UploadAsync(jsonString, true);
         }
 
-        public static async Task<List<LogInEntity>> GetTableEntities(DateTime dateTimeFrom, DateTime dateTimeTo, string tableName)
+        public async Task<List<LogInEntity>> GetTableEntities(DateTime dateTimeFrom, DateTime dateTimeTo, string tableName)
         {
             //Create requested LogInEntity List
             List<LogInEntity> logInList = new List<LogInEntity>();
 
-            //Create Storage Account
-            CloudStorageAccount storageAccount = CloudStorageAccount.Parse("UseDevelopmentStorage=true");
-
             //Get Table reference from Azure Table
-            CloudTableClient tableClient = storageAccount.CreateCloudTableClient();
+            CloudTableClient tableClient = _storageAccount.CreateCloudTableClient();
             CloudTable logInTable = tableClient.GetTableReference(tableName);
 
             //Create filter for Table query
@@ -84,13 +93,10 @@ namespace StorageApp
             return logInList;
         }
 
-        public static async Task<object> GetBlob(string blobName, string containerName)
+        public async Task<object> GetBlob(string blobName, string containerName)
         {
-            //Create Storage Account
-            CloudStorageAccount storageAccount = CloudStorageAccount.Parse("UseDevelopmentStorage=true");
-
             //Reference to Blob Container
-            CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
+            CloudBlobClient blobClient = _storageAccount.CreateCloudBlobClient();
             CloudBlobContainer blobContainer = blobClient.GetContainerReference(containerName);
 
             // Get reference to blob  

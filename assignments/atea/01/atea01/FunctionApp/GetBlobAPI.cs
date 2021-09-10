@@ -8,13 +8,21 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using StorageApp;
+using System.Configuration;
 
 namespace FunctionApp
 {
     public class GetBlobAPI
     {
+        private readonly StorageService _storageService;
+
+        public GetBlobAPI(StorageService storageService)
+        {
+            _storageService = storageService;
+        }
+
         [FunctionName("GetBlob")]
-        public static async Task<IActionResult> Run(
+        public async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = null)] HttpRequest req,
             ILogger log)
         {
@@ -33,7 +41,7 @@ namespace FunctionApp
 
             try
             {
-                object blob = await StorageService.GetBlob(blobName, "blob-container");
+                object blob = await _storageService.GetBlob(blobName, ConfigurationManager.AppSettings["azureBlobContainerName"]);
                 return new OkObjectResult(blob);
             }
             catch (Exception e)
