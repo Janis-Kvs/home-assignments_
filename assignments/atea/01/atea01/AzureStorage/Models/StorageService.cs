@@ -29,9 +29,8 @@ namespace StorageApp
         public async Task InsertTableEntity(ApiResponse<ApiItem> response)
         {
             //Create Azure Table
-            CloudTableClient tableClient = _storageAccount.CreateCloudTableClient();
             var tableName = ConfigurationManager.AppSettings["azureTableName"];
-            CloudTable logInTable = tableClient.GetTableReference(tableName);
+            CloudTable logInTable = GetCloudTable(tableName);
             await logInTable.CreateIfNotExistsAsync();
 
             //Insert entities
@@ -39,6 +38,7 @@ namespace StorageApp
             int statusCodeInt = (int)response.StatusCode;
             await logInTable.ExecuteAsync(TableOperation.InsertOrReplace(new LogInEntity(statusCode, statusCodeInt)));
         }
+
         public async Task InsertBlob(ApiResponse<ApiItem> response)
         {
             // retrieving the content in the response body as a strongly-typed object
@@ -66,8 +66,7 @@ namespace StorageApp
             List<LogInEntity> logInList = new List<LogInEntity>();
 
             //Get Table reference from Azure Table
-            CloudTableClient tableClient = _storageAccount.CreateCloudTableClient();
-            CloudTable logInTable = tableClient.GetTableReference(tableName);
+            CloudTable logInTable = GetCloudTable(tableName);
 
             //Create filter for Table query
             string lowerFilter = TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.GreaterThanOrEqual, dateTimeFrom.ToString());
@@ -107,12 +106,19 @@ namespace StorageApp
             await blockBlob.DownloadToStreamAsync(ms);
 
             //encode to string
-            Console.WriteLine(Encoding.Default.GetString(ms.ToArray()));
+            var stringObject = Encoding.Default.GetString(ms.ToArray());
 
             //deserialize json
-            object json = JsonConvert.DeserializeObject(Encoding.Default.GetString(ms.ToArray()));
-
+            object json = JsonConvert.DeserializeObject(stringObject);
             return json;
+        }
+
+        private CloudTable GetCloudTable(string tableName)
+        {
+            //Create CloudTableClient and get table reference
+            CloudTableClient tableClient = _storageAccount.CreateCloudTableClient();
+            CloudTable logInTable = tableClient.GetTableReference(tableName);
+            return logInTable;
         }
     }
 }

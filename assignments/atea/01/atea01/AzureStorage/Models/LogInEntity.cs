@@ -18,10 +18,7 @@ namespace StorageApp
             StatusCode = statusCode.ToString();
         }
 
-        public LogInEntity()
-        {
-            throw new NotImplementedException();
-        }
+        public LogInEntity() {}
 
         public override string ToString()
         {
